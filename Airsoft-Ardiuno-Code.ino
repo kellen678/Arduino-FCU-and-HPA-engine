@@ -1,27 +1,31 @@
 int Recived = 0;
 String snum1 ;
-int Dwell = 0;
+int Dwell = 20;
 String snum2 ;
-int FireRate = 0;
+int FireRate = 35;
 String snum3 ;
-int Burst = 0;
-int mode = 1;
+int Burst = 3;
+int mode = 3;
 const int Fire = 5;
 const int Bullet = 8;
-float FRDelay = 0.0;
+float FRDelay = 2.0;
+#include <SoftwareSerial.h>
+SoftwareSerial mySerial(7, 6); // RX, TX
 
 void setup() {
-  Serial.begin(9600);
+  mySerial.begin(9600);   
   pinMode(Fire, INPUT_PULLUP);
   pinMode(Bullet, OUTPUT);
 }
 
 void loop() {
-  if (Serial.available() > 0) {
-    Recived = Serial.read();
+
+   if (mySerial.available() > 0) {
+    Recived = mySerial.read();
   }
   if (Recived == 's') {
     mode = 1;
+    Serial.print(Recived);
   }
   else if (Recived == 'b') {
     mode = 2;
@@ -31,17 +35,17 @@ void loop() {
   }
   else if (Recived == 'q') {
     delay(500);
-    snum1 = Serial.readString();
+    snum1 = mySerial.readString();
     Dwell = snum1.toInt();
   }
   else if (Recived == 'w') {
     delay(500);
-    snum2 = Serial.readString();
+    snum2 = mySerial.readString();
     FireRate = snum2.toInt();
   }
   else if (Recived == 'e') {
     delay(500);
-    snum3 = Serial.readString();
+    snum3 = mySerial.readString();
     Burst = snum3.toInt();
   }
 
@@ -71,3 +75,4 @@ void loop() {
     }
   }
 }
+ 
